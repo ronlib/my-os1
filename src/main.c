@@ -5,8 +5,14 @@
 
 int main(struct multiboot *mboot_ptr)
 {
-    // All our initialisation calls will go in here.
 	displayString("Hello world!\n");
+	
+	asm volatile("xchg %%bx, %%bx" : :);
+	
+    // All our initialisation calls will go in here.
+	
+	
+	init_descriptor_tables();
 
     return 0xDEADBABA;
 }

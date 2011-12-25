@@ -19,7 +19,7 @@ const u8int TEXT_SHIFT = 0;
 
 #define SCREEN_BUFFER 0xB8000
 
-u16int * video_memory = SCREEN_BUFFER;
+u16int * video_memory = (u16int)SCREEN_BUFFER;
 
 u8int x_pos = 0, y_pos = 0;
 
@@ -27,7 +27,7 @@ static void move_cursor()
 {
 	u16int cursorLocation = y_pos * MAX_WIDTH + x_pos;
 
-	outb(CONTROLLER_COMMAND_PORT, 14);
+	outb(CONTROLLER_COMMAND_PORT	, 14);
 	outb(CONTROLLER_DATA_PORT, cursorLocation >> 8);
 	
 	outb(CONTROLLER_COMMAND_PORT, 14);
