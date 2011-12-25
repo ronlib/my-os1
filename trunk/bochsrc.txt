@@ -2,10 +2,11 @@ megs: 32
 romimage: file=/usr/share/bochs/BIOS-bochs-latest
 vgaromimage: file=/usr/share/bochs/VGABIOS-lgpl-latest
 floppya: 1_44=/dev/loop1, status=inserted
-boot: a
+boot: floppy
 log: bochsout.txt
 mouse: enabled=0
 clock: sync=none
 cpu: ips=200000
 vga_update_interval: 40000
-display_library: term
+display_library: sdl
+magic_break: enabled=1
