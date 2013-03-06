@@ -19,7 +19,7 @@ const u8int TEXT_SHIFT = 0;
 
 #define SCREEN_BUFFER 0xB8000
 
-u16int * video_memory = (u16int)SCREEN_BUFFER;
+u16int * video_memory = (u16int *)SCREEN_BUFFER;
 
 u8int x_pos = 0, y_pos = 0;
 
@@ -37,7 +37,7 @@ static void move_cursor()
 
 static void scroll()
 {
-	if (SCREEN_HEIGHT - 1 > y_pos)
+	if (SCREEN_HEIGHT > y_pos)
 	{
 		return;
 	}
@@ -71,7 +71,7 @@ u8int getColorScheme(u8int background, u8int foreground)
 }
 
 void monitor_put(char c)
-{
+{	
 	u8int colorScheme = getColorScheme(BLACK, WHITE);
 	
 
@@ -96,13 +96,13 @@ void monitor_put(char c)
 
 	else if (' ' <= c)
 	{
-		video_memory[getVideoBufferLocation(x_pos, y_pos)] = colorScheme << 8 | c;
+		video_memory[getVideoBufferLocation(x_pos, y_pos)] = (colorScheme << 8) | c;
 		++x_pos;
 	}
 
 	
 	if (MAX_WIDTH <= x_pos)
-	{
+	{		
 		x_pos = 0;
 		++y_pos;
 	}
@@ -138,9 +138,40 @@ void monitor_clear()
 void displayString(char * str)
 {
 	int i = 0;
-
+	
 	while (0 != str[i])
 	{
 		monitor_put(str[i]);
+		++i;
 	}
+}
+
+void monitor_write_hex(u32int n)
+{
+	monitor_put('0');
+	monitor_put('x');
+	do
+	{
+		if (n % 16 > 9)
+		{
+			monitor_put((n % 16) - 10 + 'A');
+		}
+		else
+		{
+			monitor_put((n % 16) + '0');
+		}
+		
+		n = n >> 4;
+		
+	} while (n > 0);
+}
+
+void monitor_write_dec(u32int n)
+{
+	do
+	{
+		monitor_put((n % 10) + '0');
+		n = n / 10;
+
+	} while (n > 0);
 }
