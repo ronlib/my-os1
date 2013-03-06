@@ -24,4 +24,8 @@ u16int getVideoBufferLocation(u8int x, u8int y);
 
 void displayString(char * str);
 
+void monitor_write_hex(u32int n);
+
+void monitor_write_dec(u32int n);
+
 #endif // MONITOR_H

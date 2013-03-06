@@ -1,5 +1,6 @@
+#include "common.h"
 #include "descriptor_tables.h"
-//#include <string.h>
+#include "monitor.h"
 
 extern void gdt_flush(u32int gdtAddress);
 
@@ -17,6 +18,8 @@ void init_descriptor_tables()
 {
 	init_gdt();
 	init_idt();
+	
+	displayString("init_descriptor_tables: Initialized tables!\n");
 }
 
 void init_gdt()
@@ -30,7 +33,7 @@ void init_gdt()
 	gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
 	gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
 	gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
-
+	
 	gdt_flush((u32int)&gdt_ptr);
 }
 
@@ -89,7 +92,10 @@ void init_idt()
 	idt_set_gate(31, (u32int)isr31, 0x08, 0x8e);
 //	idt_set_gate(32, (u32int)isr32, 0x08, 0x8e);
 
+	BREAKPOINT;
 	idt_flush((u32int)&idt_ptr);
+	
+	displayString("init_idt: flushed IDT table!\n");
 }
 
 void idt_set_gate( u8int num, u32int base, u16int sel, u8int flags)
