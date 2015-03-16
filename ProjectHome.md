@@ -1,0 +1,1 @@
+A small, home made OS I'm developing, for the sake of learning only.
